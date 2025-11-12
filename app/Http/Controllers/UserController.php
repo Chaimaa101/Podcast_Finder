@@ -35,9 +35,7 @@ class UserController extends Controller
     {
         try{
              $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $user->id,
-            'role' => 'sometimes|in:student,teacher,admin',
+            'role' => 'sometimes|in:user,animateur,admin',
         ]);
 
         $user->update($validated);

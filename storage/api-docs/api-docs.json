@@ -1,0 +1,193 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Podcast Founder Api",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/podcasts": {
+            "get": {
+                "tags": [
+                    "Podcasts"
+                ],
+                "summary": "List all podcasts",
+                "operationId": "4c6b8a97f2c75664f33ad7554f38b246",
+                "responses": {
+                    "200": {
+                        "description": "List of podcasts",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Podcast"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Podcasts"
+                ],
+                "summary": "Create a new podcast",
+                "operationId": "4e2dcda84b44d7fd791655429a5aaec8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Podcast"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Podcast created successfully"
+                    }
+                }
+            }
+        },
+        "/api/podcasts/{id}": {
+            "get": {
+                "tags": [
+                    "Podcasts"
+                ],
+                "summary": "Show podcast details",
+                "operationId": "f08a0d5aa9c6958e5b4d216bd6a1ec1a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Podcast ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Podcast details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Podcast"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Podcast not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Podcasts"
+                ],
+                "summary": "Update a podcast",
+                "operationId": "e437ba6ea2971cd4275d202429df57fd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Podcast"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Podcast updated successfully"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Podcasts"
+                ],
+                "summary": "Delete a podcast",
+                "operationId": "c4c3c2f8c4d6bbb1921f4b48fdc532d4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Podcast deleted successfully"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Podcast": {
+                "title": "Podcast",
+                "description": "Podcast model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "The Tech Talk Show"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A podcast about technology trends and innovations."
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "Technology"
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/demo/image/upload/v1690012345/podcast.jpg"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2025-11-12T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "2025-11-12T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Podcasts",
+            "description": "Endpoints for managing podcasts"
+        }
+    ]
+}

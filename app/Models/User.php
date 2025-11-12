@@ -44,6 +44,6 @@ class User extends Authenticatable
     ];
     public function podcasts()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Podcast::class);
     }
 }

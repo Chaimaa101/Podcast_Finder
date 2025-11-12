@@ -12,12 +12,16 @@ class EpisodeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Podcast $podcast)
     {
         try {
-            return Episode::with('podcast')->get();
+            $episodes = Episode::where('podcast_id', $podcast->id)
+                ->with('podcast')
+                ->get();
+
+            return response()->json($episodes);
         } catch (\Exception $e) {
-            return[ 
+            return [
                 'error' => $e->getMessage()
             ];
         }
@@ -27,7 +31,7 @@ class EpisodeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEpisodeRequest $request,Podcast $podcast)
+    public function store(StoreEpisodeRequest $request, Podcast $podcast)
     {
         try {
 
@@ -50,7 +54,7 @@ class EpisodeController extends Controller
      */
     public function show(Episode $episode)
     {
-       return $episode;
+        return $episode;
     }
 
 

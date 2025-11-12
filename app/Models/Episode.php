@@ -10,6 +10,7 @@ class Episode extends Model
     use HasFactory;
 
     protected $fillable = [
+        'podcast_id',
         'title',
         'description',
         'audio_file',

@@ -2,32 +2,52 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EpisodeController;
+use App\Http\Controllers\HostController;
 use App\Http\Controllers\PodcastController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('register',[AuthController::class,'register']);
-Route::post('login',[AuthController::class,'login']);
-Route::post('reset',[AuthController::class,'reset']);
 
-Route::post('logout',[AuthController::class,'logout']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('reset', [AuthController::class, 'reset']);
 
-Route::apiResource('users', UserController::class)->middleware(['auth:sanctum', 'role:admin']);
-Route::apiResource('podcasts.episodes', EpisodeController::class)->middleware(['auth:sanctum', 'role:admin']);
-Route::apiResource('podcasts', PodcastController::class);
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::post('logout', [AuthController::class, 'logout']);
+
+    Route::get('podcasts', [PodcastController::class, 'index']);
+    Route::get('podcasts/{id}', [PodcastController::class, 'show']);
+    Route::get('podcasts/{podcast}/episodes', [EpisodeController::class, 'index']);
+    Route::get('episodes/{id}', [EpisodeController::class, 'show']);
+
+    Route::get('search/podcasts', [PodcastController::class, 'search']);
+    Route::get('search/episodes', [EpisodeController::class, 'search']);
+});
+
+
+
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+
+    Route::apiResource('podcasts', PodcastController::class);
+    Route::apiResource('hosts', HostController::class);
+
+});
+
+
+Route::middleware(['auth:sanctum', 'role:admin,animateur'])->group(function () {
+
+    Route::apiResource('users', UserController::class);
+
+    Route::apiResource('podcasts.episodes', EpisodeController::class);
+    Route::put('episodes/{id}', [EpisodeController::class, 'update']);
+    Route::delete('episodes/{id}', [EpisodeController::class, 'destroy']);
+});

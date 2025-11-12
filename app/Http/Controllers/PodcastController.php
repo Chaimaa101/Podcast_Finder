@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Podcast;
 use App\Http\Requests\StorePodcastRequest;
 use App\Http\Requests\UpdatePodcastRequest;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class PodcastController extends Controller
 {
@@ -28,9 +29,21 @@ class PodcastController extends Controller
     public function store(StorePodcastRequest $request)
     {
         try {
-            $request->user()->podcasts()->create($request->validated());
+             $infos = $request->validated();
+
+       
+        if ($request->hasFile('image')) {
+             $filePath = $request->file('image')->getRealPath();
+
+            $uploadedImage = Cloudinary::upload($filePath);
+
+            $infos['image'] = $uploadedImage;
+        }
+
+            $podcast = $request->user()->podcasts()->create($infos);
             return [
-                'message' => 'podcast créé avec succès'
+                'message' => 'podcast créé avec succès',
+                'podcast' => $podcast
             ];
         } catch (\Exception $e) {
             return [
