@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Episode;
 use App\Http\Requests\StoreEpisodeRequest;
 use App\Http\Requests\UpdateEpisodeRequest;
+use App\Models\Episode;
+use App\Models\Podcast;
 
 class EpisodeController extends Controller
 {
@@ -13,47 +14,64 @@ class EpisodeController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            return Episode::with('podcast')->get();
+        } catch (\Exception $e) {
+            return[ 
+                'error' => $e->getMessage()
+            ];
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreEpisodeRequest $request)
+    public function store(StoreEpisodeRequest $request,Podcast $podcast)
     {
-        //
+        try {
+
+            $episode = $podcast->episodes()->create($request->validated());
+
+            return [
+                'message' => 'Episode créé avec succès',
+                'Episode' => $episode
+            ];
+        } catch (\Exception $th) {
+            return [
+                'error' => $th->getMessage()
+            ];
+        }
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(Episode $episode)
     {
-        //
+       return $episode;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Episode $episode)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateEpisodeRequest $request, Episode $episode)
     {
-        //
+        try {
+
+            $episode->update($request->validated());
+
+            return [
+                'message' => 'Episode modifié avec succès',
+                'Episode' => $episode
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
     }
 
     /**
@@ -61,6 +79,16 @@ class EpisodeController extends Controller
      */
     public function destroy(Episode $episode)
     {
-        //
+        try {
+            $episode->delete();
+
+            return [
+                'message' => 'Episode supprimé avec succès',
+            ];
+        } catch (\Exception $th) {
+            return [
+                'error' => $th->getMessage()
+            ];
+        }
     }
 }

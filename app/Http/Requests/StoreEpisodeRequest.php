@@ -11,7 +11,7 @@ class StoreEpisodeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,20 @@ class StoreEpisodeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string',
+            'description' => 'nullable|string|min:10',
+            'audio_file' => 'required|file',
+            'duree' => 'nullable|number',
         ];
     }
+     public function messages(): array
+    {
+        return [
+            'title.required' => 'Le titre du podcast est obligatoire.',
+            'description.min' => 'La descripton doit dépasser 10 caractères.',
+            'audio_file.required' => 'Vous devez sélectionner un fichier audio.',
+            'audio_file.mimes' => 'Le fichier doit être au format audio.',
+        ];
+    }
+    
 }

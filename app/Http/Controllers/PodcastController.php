@@ -13,15 +13,13 @@ class PodcastController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        try {
+            return Podcast::with(['user', 'episodes'])->get();
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
     }
 
     /**
@@ -29,7 +27,16 @@ class PodcastController extends Controller
      */
     public function store(StorePodcastRequest $request)
     {
-        //
+        try {
+            $request->user()->podcasts()->create($request->validated());
+            return [
+                'message' => 'podcast créé avec succès'
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
     }
 
     /**
@@ -37,15 +44,13 @@ class PodcastController extends Controller
      */
     public function show(Podcast $podcast)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Podcast $podcast)
-    {
-        //
+        try {
+            return $podcast;
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
     }
 
     /**
@@ -53,7 +58,16 @@ class PodcastController extends Controller
      */
     public function update(UpdatePodcastRequest $request, Podcast $podcast)
     {
-        //
+         try {
+            $podcast->update($request->validated());
+            return [
+                'message' => 'Podcast modifié avec succès'
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
     }
 
     /**

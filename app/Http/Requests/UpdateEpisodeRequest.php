@@ -11,7 +11,7 @@ class UpdateEpisodeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -19,10 +19,22 @@ class UpdateEpisodeRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+     public function rules(): array
     {
         return [
-            //
+            'title' => 'sometimes|string',
+            'description' => 'nullable|string|min:10',
+            'audio_file' => 'sometimes|file',
+            'duree' => 'nullable|number',
+        ];
+    }
+     public function messages(): array
+    {
+        return [
+            'title.required' => 'Le titre du podcast est obligatoire.',
+            'description.min' => 'La descripton doit dépasser 10 caractères.',
+            'audio_file.required' => 'Vous devez sélectionner un fichier audio.',
+            'audio_file.mimes' => 'Le fichier doit être au format audio.',
         ];
     }
 }

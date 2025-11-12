@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('audio_file');
+            $table->integer('duree');
             $table->timestamps();
         });
     }
