@@ -25,9 +25,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::get('podcasts', [PodcastController::class, 'index']);
-    Route::get('podcasts/{id}', [PodcastController::class, 'show']);
+    Route::get('podcasts/{podcast}', [PodcastController::class, 'show']);
     Route::get('podcasts/{podcast}/episodes', [EpisodeController::class, 'index']);
-    Route::get('episodes/{id}', [EpisodeController::class, 'show']);
+    Route::get('episodes/{epidode}', [EpisodeController::class, 'show']);
 
     Route::get('search/podcasts', [PodcastController::class, 'search']);
     Route::get('search/episodes', [EpisodeController::class, 'search']);
@@ -37,7 +37,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
-    Route::apiResource('podcasts', PodcastController::class);
+    Route::apiResource('users', UserController::class);
+   
     Route::apiResource('hosts', HostController::class);
 
 });
@@ -45,7 +46,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:admin,animateur'])->group(function () {
 
-    Route::apiResource('users', UserController::class);
+     Route::apiResource('podcasts', PodcastController::class);
 
     Route::apiResource('podcasts.episodes', EpisodeController::class);
     Route::put('episodes/{id}', [EpisodeController::class, 'update']);

@@ -16,8 +16,6 @@ class AuthController extends Controller
     {
         try {
             $infos = $request->validated();
-
-            $infos['password'] = Hash::make($infos['password']);
             $user = User::create($infos);
             $token = $user->createToken($user->name)->plainTextToken;
 
@@ -79,11 +77,11 @@ class AuthController extends Controller
     public function reset(ResetPasswordRequest $request)
     {
         try {
-            $infos = $request->validate();
+            $infos = $request->validated();
 
             $user = User::where('email', $infos['email'])->first();
             
-            $user->update($infos['password']);
+            $user->update(['password' => Hash::make($infos['password'])]);
             return [
                 'message' => 'votre mot de passe est réinitialisé avec succès.'
             ];

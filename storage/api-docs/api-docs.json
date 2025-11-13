@@ -1,10 +1,130 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Podcast Founder Api",
+        "title": "Podcast Finder Api",
         "version": "0.1"
     },
     "paths": {
+        "/api/podcasts/{podcast}/episodes": {
+            "get": {
+                "tags": [
+                    "Episodes"
+                ],
+                "summary": "Show Episode of a podcast",
+                "operationId": "67c0faec634e274f63807e05404ccc5d",
+                "parameters": [
+                    {
+                        "name": "podcast",
+                        "in": "path",
+                        "description": "Episode ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Episode details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Episode"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Episode not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Episodes"
+                ],
+                "summary": "Create a new Episode",
+                "operationId": "c1a42274d59a4b01007fe037b555ad23",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Episode"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Episode created successfully"
+                    }
+                }
+            }
+        },
+        "/api/episodes/{episode}": {
+            "put": {
+                "tags": [
+                    "Episodes"
+                ],
+                "summary": "Update a Episode",
+                "operationId": "6a1760ad3d401a37e990d5eb1858211b",
+                "parameters": [
+                    {
+                        "name": "episode",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Episode"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Episode updated successfully"
+                    }
+                }
+            }
+        },
+        "/api/Episodes/{id}": {
+            "delete": {
+                "tags": [
+                    "Episodes"
+                ],
+                "summary": "Delete a Episode",
+                "operationId": "213968e17aff84b14aa29d42243d63d8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Episode deleted successfully"
+                    }
+                }
+            }
+        },
         "/api/podcasts": {
             "get": {
                 "tags": [
@@ -139,10 +259,83 @@
                     }
                 }
             }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "create account",
+                "operationId": "cc808e67c1e8e147e2a4b4e855c0a8e9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Episode details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Episode not found"
+                    }
+                }
+            }
         }
     },
     "components": {
         "schemas": {
+            "Episode": {
+                "title": "Episode",
+                "description": "Episode model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "The Tech Talk Show"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A Episode about technology trends and innovations."
+                    },
+                    "duree": {
+                        "type": "integer",
+                        "example": "20"
+                    },
+                    "audio_file": {
+                        "type": "string",
+                        "example": "https://res.cloudinary.com/demo/image/upload/v1690012345/Episode.jpg"
+                    },
+                    "podcast_id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2025-11-12T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "2025-11-12T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
             "Podcast": {
                 "title": "Podcast",
                 "description": "Podcast model",
@@ -181,13 +374,67 @@
                     }
                 },
                 "type": "object"
+            },
+            "User": {
+                "title": " User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Tanythinf"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "anything@gmail.co"
+                    },
+                    "password": {
+                        "type": "integer",
+                        "example": "password12"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "example": "password12"
+                    },
+                    "role": {
+                        "type": "string",
+                        "example": "admin"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "example": "2025-11-12T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "example": "2025-11-12T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },
     "tags": [
         {
+            "name": "Episodes",
+            "description": "Endpoints for managing Episodes"
+        },
+        {
             "name": "Podcasts",
             "description": "Endpoints for managing podcasts"
+        },
+        {
+            "name": "User",
+            "description": "Endpoints for managing users"
         }
     ]
 }

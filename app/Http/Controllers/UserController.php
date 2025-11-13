@@ -8,29 +8,19 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * (Admin only)
-     */
+    
     public function index()
     {
         $users = User::all();
         return $users;
     }
 
-    /**
-     * Display the specified user.
-     * (Admin only)
-     */
+   
     public function show(User $user)
     {
         return $user;
     }
 
-    /**
-     * Update the specified user.
-     * (Admin only — can be used to promote a user to admin)
-     */
     public function update(Request $request, User $user)
     {
         try{
@@ -53,10 +43,7 @@ class UserController extends Controller
        
     }
 
-    /**
-     * Remove the specified user from storage.
-     * (Admin only)
-     */
+   
     public function destroy(User $user)
     {
         try {

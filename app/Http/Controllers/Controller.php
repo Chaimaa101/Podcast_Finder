@@ -6,7 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 /**
- * @OA\Info(title="Podcast Founder Api", version="0.1")
+ * @OA\Info(title="Podcast Finder Api", version="0.1")
  */
 
 class Controller extends BaseController
