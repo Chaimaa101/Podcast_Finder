@@ -259,40 +259,6 @@
                     }
                 }
             }
-        },
-        "/api/register": {
-            "post": {
-                "tags": [
-                    "User"
-                ],
-                "summary": "create account",
-                "operationId": "cc808e67c1e8e147e2a4b4e855c0a8e9",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/User"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Episode details",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/User"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Episode not found"
-                    }
-                }
-            }
         }
     },
     "components": {
@@ -431,10 +397,6 @@
         {
             "name": "Podcasts",
             "description": "Endpoints for managing podcasts"
-        },
-        {
-            "name": "User",
-            "description": "Endpoints for managing users"
         }
     ]
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('episodes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('podcast_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('podcast_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description');
             $table->string('audio_file');

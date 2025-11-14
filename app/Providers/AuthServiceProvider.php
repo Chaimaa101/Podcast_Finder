@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\Podcast;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,8 +28,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('modify', function (User $user, Podcast $podcast) {
-            return $user->id === $podcast->user_id;
+        Gate::define('is-owner', function ($user, $podcast) {
+
+            return $user->id ===  $podcast->user_id
+                ? Response::allow()
+                : Response::deny('Vous n\'êtes pas le propriétaire de cette ressource.');
         });
     }
 }

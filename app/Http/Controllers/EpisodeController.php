@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEpisodeRequest;
 use App\Http\Requests\UpdateEpisodeRequest;
 use App\Models\Episode;
 use App\Models\Podcast;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class EpisodeController extends Controller
 {
@@ -34,16 +35,27 @@ class EpisodeController extends Controller
     public function store(StoreEpisodeRequest $request, Podcast $podcast)
     {
         try {
+            $infos = $request->validated();
 
-            $episode = $podcast->episodes()->create($request->validated());
+            if ($request->hasFile('audio')) {
+
+                $uploadedFile = Cloudinary::uploadFile(
+                    $request->file('audio')->getRealPath(),
+                    ['resource_type' => 'auto']
+                );
+
+                $infos['audio'] = $uploadedFile->getSecurePath();
+            }
+
+            $episode = $podcast->episodes()->create($infos);
 
             return [
                 'message' => 'Episode créé avec succès',
                 'Episode' => $episode
             ];
-        } catch (\Exception $th) {
+        } catch (\Exception $e) {
             return [
-                'error' => $th->getMessage()
+                'error' => $e->getMessage()
             ];
         }
     }
@@ -65,7 +77,19 @@ class EpisodeController extends Controller
     {
         try {
 
-            $episode->update($request->validated());
+             $infos = $request->validated();
+
+            if ($request->hasFile('audio')) {
+
+                $uploadedFile = Cloudinary::uploadFile(
+                    $request->file('audio')->getRealPath(),
+                    ['resource_type' => 'auto']
+                );
+
+                $infos['audio'] = $uploadedFile->getSecurePath();
+            }
+
+            $episode->update($infos);
 
             return [
                 'message' => 'Episode modifié avec succès',

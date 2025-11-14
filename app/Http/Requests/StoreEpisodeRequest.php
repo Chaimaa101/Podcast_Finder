@@ -25,7 +25,7 @@ class StoreEpisodeRequest extends FormRequest
             'title' => 'required|string',
             'description' => 'nullable|string|min:10',
             'audio_file' => 'required|file',
-            'duree' => 'nullable|number',
+            'duree' => 'nullable|string',
         ];
     }
      public function messages(): array

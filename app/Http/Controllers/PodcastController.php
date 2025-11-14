@@ -6,6 +6,7 @@ use App\Models\Podcast;
 use App\Http\Requests\StorePodcastRequest;
 use App\Http\Requests\UpdatePodcastRequest;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\Gate;
 
 class PodcastController extends Controller
 {
@@ -28,17 +29,17 @@ class PodcastController extends Controller
      */
     public function store(StorePodcastRequest $request)
     {
+
         try {
-             $infos = $request->validated();
+            $infos = $request->validated();
 
-       
-        if ($request->hasFile('image')) {
-             $filePath = $request->file('image')->getRealPath();
+            if ($request->hasFile('image')) {
+                $filePath = $request->file('image')->getRealPath();
 
-            $uploadedImage = Cloudinary::upload($filePath);
+                $uploadedImage = Cloudinary::upload($filePath);
 
-            $infos['image'] = $uploadedImage;
-        }
+                $infos['image'] = $uploadedImage;
+            }
 
             $podcast = $request->user()->podcasts()->create($infos);
             return [
@@ -71,8 +72,20 @@ class PodcastController extends Controller
      */
     public function update(UpdatePodcastRequest $request, Podcast $podcast)
     {
-         try {
-            $podcast->update($request->validated());
+
+        Gate::authorize('is-owner', $podcast);
+        try {
+            $infos = $request->validated();
+
+            if ($request->hasFile('image')) {
+                $filePath = $request->file('image')->getRealPath();
+
+                $uploadedImage = Cloudinary::upload($filePath);
+
+                $infos['image'] = $uploadedImage;
+            }
+            
+            $podcast->update($infos);
             return [
                 'message' => 'Podcast modifié avec succès'
             ];
@@ -88,6 +101,16 @@ class PodcastController extends Controller
      */
     public function destroy(Podcast $podcast)
     {
-        //
+        Gate::authorize('is-owner', $podcast);
+        try {
+            $podcast->delete();
+            return [
+                'message' => 'Podcast supprimé avec succès'
+            ];
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
     }
 }

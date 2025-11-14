@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('podcasts', [PodcastController::class, 'index']);
     Route::get('podcasts/{podcast}', [PodcastController::class, 'show']);
     Route::get('podcasts/{podcast}/episodes', [EpisodeController::class, 'index']);
-    Route::get('episodes/{epidode}', [EpisodeController::class, 'show']);
+    Route::get('episodes/{episode}', [EpisodeController::class, 'show']);
 
     Route::get('search/podcasts', [PodcastController::class, 'search']);
     Route::get('search/episodes', [EpisodeController::class, 'search']);
@@ -46,9 +46,9 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:admin,animateur'])->group(function () {
 
-     Route::apiResource('podcasts', PodcastController::class);
+     Route::apiResource('podcasts', PodcastController::class)->only('store','update','delete');
 
-    Route::apiResource('podcasts.episodes', EpisodeController::class);
+    Route::apiResource('podcasts.episodes', EpisodeController::class)->only('store','update','delete');
     Route::put('episodes/{id}', [EpisodeController::class, 'update']);
     Route::delete('episodes/{id}', [EpisodeController::class, 'destroy']);
 });
