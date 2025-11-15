@@ -7,9 +7,22 @@ use App\Http\Requests\StorePodcastRequest;
 use App\Http\Requests\UpdatePodcastRequest;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Request;
+
 
 class PodcastController extends Controller
 {
+
+    public function myPodcasts(Request $request)
+    {
+        try {
+            return $request->user()->podcasts()->with('episodes')->get();
+        } catch (\Exception $e) {
+            return [
+                'error' => $e->getMessage()
+            ];
+        }
+    }
     /**
      * Display a listing of the resource.
      */
@@ -34,12 +47,14 @@ class PodcastController extends Controller
             $infos = $request->validated();
 
             if ($request->hasFile('image')) {
-                $filePath = $request->file('image')->getRealPath();
+                $uploadedImage = Cloudinary::upload(
+                    $request->file('image')->getRealPath(),
+                    ['resource_type' => 'image']
+                );
 
-                $uploadedImage = Cloudinary::upload($filePath);
-
-                $infos['image'] = $uploadedImage;
+                $infos['image'] = $uploadedImage->getSecurePath();
             }
+
 
             $podcast = $request->user()->podcasts()->create($infos);
             return [
@@ -78,16 +93,16 @@ class PodcastController extends Controller
             $infos = $request->validated();
 
             if ($request->hasFile('image')) {
-                $filePath = $request->file('image')->getRealPath();
 
-                $uploadedImage = Cloudinary::upload($filePath);
+                $imageFile = Cloudinary::upload($request->file('image')->getRealPath());
 
-                $infos['image'] = $uploadedImage;
+                $infos['image'] = $imageFile->getSecurePath();
             }
-            
+
             $podcast->update($infos);
             return [
-                'message' => 'Podcast modifié avec succès'
+                'message' => 'Podcast modifié avec succès',
+                'podcast' => $podcast
             ];
         } catch (\Exception $e) {
             return [
@@ -112,5 +127,17 @@ class PodcastController extends Controller
                 'error' => $e->getMessage()
             ];
         }
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('query');
+
+        $podcasts = Podcast::where('title', 'LIKE', "%$search%")
+            ->orWhere('description', 'LIKE', "%$search%")
+            ->orWhere('category', 'LIKE', "%$search%")
+            ->get();
+
+        return response()->json($podcasts);
     }
 }

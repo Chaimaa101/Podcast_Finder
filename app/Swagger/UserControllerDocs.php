@@ -7,11 +7,7 @@ namespace App\Swagger;
  *     name="User",
  *     description="Endpoints for managing users"
  * )
- */
-
-class UserControllerDocs {}
-
-/**
+ 
  * ======================
  *      REGISTER
  * ======================
@@ -30,10 +26,7 @@ class UserControllerDocs {}
  *     ),
  *     @OA\Response(response=404, description="User not found")
  * )
- */
-
- 
-/**
+ *
  * ======================
  *        LOGIN
  * ======================
@@ -60,10 +53,6 @@ class UserControllerDocs {}
  *     ),
  *     @OA\Response(response=404, description="User not found")
  * )
- */
-
- 
-/**
  * ======================
  *    RESET PASSWORD
  * ======================
@@ -93,3 +82,4 @@ class UserControllerDocs {}
  *     @OA\Response(response=404, description="User not found")
  * )
  */
+class UserControllerDocs {}

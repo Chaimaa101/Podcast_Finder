@@ -28,11 +28,18 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('is-owner', function ($user, $podcast) {
+        Gate::define('is-owner', function ($user, $model) {
+            if (isset($model->user_id)) {
+                if ($user->id === $model->user_id) {
+                    return Response::allow();
+                }
+            }
+            
+            if (isset($model->podcast) && $user->id === $model->podcast->user_id) {
+                return Response::allow();
+            }
 
-            return $user->id ===  $podcast->user_id
-                ? Response::allow()
-                : Response::deny('Vous n\'êtes pas le propriétaire de cette ressource.');
+            return Response::deny("Vous n'êtes pas le propriétaire de cette ressource.");
         });
     }
 }

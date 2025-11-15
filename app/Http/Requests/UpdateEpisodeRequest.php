@@ -24,7 +24,7 @@ class UpdateEpisodeRequest extends FormRequest
         return [
             'title' => 'sometimes|string',
             'description' => 'nullable|string|min:10',
-            'audio_file' => 'sometimes|file',
+            'audio_file' => 'sometimes|mimes:mp3,wav,ogg',
             'duree' => 'nullable|number',
         ];
     }

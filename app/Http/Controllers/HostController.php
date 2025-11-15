@@ -77,8 +77,13 @@ class HostController extends Controller
 
     public function destroy(User $host)
     {
-        $host->delete();
+        if($host->role === 'animateur'){
+            
+            $host->delete();
+            return response()->json(['message' => 'Animateur supprimé avec succès']);
+        }else{
+            echo 'Cet utilisateur n\'est pas un host';
+        }
 
-        return response()->json(['message' => 'Animateur supprimé avec succès']);
     }
 }

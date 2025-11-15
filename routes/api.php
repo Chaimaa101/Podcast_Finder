@@ -31,6 +31,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('search/podcasts', [PodcastController::class, 'search']);
     Route::get('search/episodes', [EpisodeController::class, 'search']);
+
+    Route::get('hosts', [HostController::class, 'index']);
+    Route::get('hosts/{host}', [HostController::class, 'show']);
 });
 
 
@@ -38,17 +41,19 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
     Route::apiResource('users', UserController::class);
-   
-    Route::apiResource('hosts', HostController::class);
 
+    Route::apiResource('hosts', HostController::class)->only('store', 'update', 'destroy');
 });
 
 
+
 Route::middleware(['auth:sanctum', 'role:admin,animateur'])->group(function () {
+    
+    Route::get('/myPodcasts', [PodcastController::class, 'myPodcasts']);
 
-     Route::apiResource('podcasts', PodcastController::class)->only('store','update','delete');
+    Route::apiResource('podcasts', PodcastController::class)->only('store', 'update', 'destroy');
 
-    Route::apiResource('podcasts.episodes', EpisodeController::class)->only('store','update','delete');
+    Route::apiResource('podcasts.episodes', EpisodeController::class)->only('store', 'update', 'destroy');
     Route::put('episodes/{id}', [EpisodeController::class, 'update']);
     Route::delete('episodes/{id}', [EpisodeController::class, 'destroy']);
 });

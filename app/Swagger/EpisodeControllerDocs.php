@@ -20,7 +20,7 @@ namespace App\Swagger;
  *     path="/api/podcasts/{podcast}/episodes",
  *     summary="Show Episode of a podcast",
  *     tags={"Episodes"},
- * security={{"bearerAuth": {}}},
+ *     security={{"bearerAuth": {}}},
  *     @OA\Parameter(
  *         name="podcast",
  *         in="path",
