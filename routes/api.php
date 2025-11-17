@@ -54,6 +54,4 @@ Route::middleware(['auth:sanctum', 'role:admin,animateur'])->group(function () {
     Route::apiResource('podcasts', PodcastController::class)->only('store', 'update', 'destroy');
 
     Route::apiResource('podcasts.episodes', EpisodeController::class)->only('store', 'update', 'destroy');
-    Route::put('episodes/{id}', [EpisodeController::class, 'update']);
-    Route::delete('episodes/{id}', [EpisodeController::class, 'destroy']);
 });

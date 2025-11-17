@@ -76,7 +76,7 @@ class EpisodeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEpisodeRequest $request, Episode $episode)
+    public function update(UpdateEpisodeRequest $request, Podcast $podcast,Episode $episode)
     {
         Gate::authorize('is-owner', $episode);
         try {
@@ -108,9 +108,10 @@ class EpisodeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Episode $episode)
+    public function destroy(Podcast $podcast,Episode $episode)
     {
-        Gate::authorize('is-owner', $episode);
+   
+    Gate::authorize('is-owner', $episode);
         try {
             $episode->delete();
 

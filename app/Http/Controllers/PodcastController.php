@@ -48,8 +48,7 @@ class PodcastController extends Controller
 
             if ($request->hasFile('image')) {
                 $uploadedImage = Cloudinary::upload(
-                    $request->file('image')->getRealPath(),
-                    ['resource_type' => 'image']
+                    $request->file('image')->getRealPath()
                 );
 
                 $infos['image'] = $uploadedImage->getSecurePath();
